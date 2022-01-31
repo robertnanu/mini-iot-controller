@@ -1,0 +1,40 @@
+{% load static %}
+{% block content %}
+<h3>Add thermostat</h3>
+
+<form action="" method="POST">
+    {% csrf_token %}
+    <div class="row">
+        <div class="col-md-4">
+            {{form.name.label}}
+            {{form.name}}
+        </div>
+        
+        <br>
+
+        <div class="col-md-4">
+            {{form.online.label}}
+            {{form.online}}
+        </div>
+        
+        <br>
+
+        <div class="col-md-4">
+            {{form.temperature.label}}
+            {{form.temperature}}
+        </div>
+        
+        <br>
+
+        <div class="col-md-4">
+            {{form.owner.label}}
+            {{form.owner}}
+        </div>
+    </div>
+    
+    <br>
+    
+    <input type="submit" name="Submit">
+</form>
+
+{% endblock %}
