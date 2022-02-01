@@ -1,6 +1,10 @@
-from django.urls import path
+from django.urls import path, include
+from rest_framework import routers
 
 from . import views
+
+# router = routers.DefaultRouter()
+# router.register('devices', views.DeviceView)
 
 urlpatterns = [
     path('', views.Index, name = 'index'),
@@ -12,4 +16,5 @@ urlpatterns = [
     path('ajax/change-state/', views.change_state, name = 'change-state'),
     path('ajax/change-temp/', views.change_temp, name = 'change-temp'),
     path('addThermostat/', views.addThermostat, name = 'addThermostat'),
+    # path('test/', include(router.urls))
 ]

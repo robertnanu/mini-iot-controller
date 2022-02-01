@@ -1,9 +1,15 @@
+import json
+import requests
 from django.contrib import auth
 from django.http.response import JsonResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
+from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+from rest_framework import viewsets
+from rest_framework.views import APIView
+from rest_framework.response import Response
 import paho.mqtt.client as mqtt
 import time
 
@@ -11,6 +17,8 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from .models import Device
 from .forms import CreateUserForm, DeviceForm
+from .serializers import DeviceSerializer
+from temperature import serializers
 
 def registerPage(request):
     form = CreateUserForm()
@@ -131,3 +139,58 @@ def addThermostat(request):
     context = {'form':form}
 
     return render(request, 'temperature/thermostat.html', context)
+
+@csrf_exempt
+def add_thermostat_api(request):
+    if request.method == 'POST':
+        payload = json.loads(request.body)
+        thermostat_name = payload['thermostat_name']
+        thermostat_temperature = payload['thermostat_temperature']
+        thermostat_owner = payload['thermostat_owner']
+        device = Device(name=thermostat_name, temperature=thermostat_temperature, owner=thermostat_owner)
+        try:
+            device.save()
+            response = json.dumps([{ 'Success': 'Device added successfully!'}])
+        except:
+            response = json.dumps([{ 'Error': 'Device could not be added!'}])
+    
+    return HttpResponse(response, content_type='text/json')
+
+class DeviceList(APIView):
+
+    ENDPOINTS = {
+        'DELETE_DEVICE': 'localhost:8888/delete/{}',
+    }
+
+    def get(self, request):
+        devices = Device.objects.all()
+        serializer_class = DeviceSerializer(devices, many=True)
+        return Response(serializer_class.data)
+
+    @csrf_exempt
+    def post(self, request):
+        if request.method == 'POST':
+            payload = json.loads(request.body)
+            thermostat_name = payload['thermostat_name']
+            thermostat_temperature = payload['thermostat_temperature']
+            thermostat_owner = payload['thermostat_owner']
+            device = Device(name=thermostat_name, temperature=thermostat_temperature, owner=thermostat_owner)
+            try:
+                device.save()
+                response = json.dumps([{ 'Success': 'Device added successfully!'}])
+            except:
+                response = json.dumps([{ 'Error': 'Device could not be added!'}])
+    
+        return HttpResponse(response, content_type='text/json')
+
+    def delete_device(self, device_id):
+        try:
+            response = requests.delete(self.ENDPOINTS['DELETE_DEVICE'].format(device_id))
+
+            if response.status_code == 204:
+                response = json.dumps([{ 'Success': 'Device added successfully!'}])
+        except:
+            response = json.dumps([{ 'Error': 'Device could not be added!'}])
+
+        return HttpResponse(response, content_type='test/json')
+            
