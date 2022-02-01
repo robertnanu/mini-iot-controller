@@ -11,6 +11,7 @@ djangorestframework = "*"
 django-rest-auth = "*"
 paho-mqtt = "*"
 django-allauth = "*"
+requests = "*"
 
 [dev-packages]
 

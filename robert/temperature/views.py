@@ -17,8 +17,8 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from .models import Device
 from .forms import CreateUserForm, DeviceForm
-from .serializers import DeviceSerializer
-from temperature import serializers
+# from .serializers import DeviceSerializer
+# from temperature import serializers
 
 def registerPage(request):
     form = CreateUserForm()
@@ -127,6 +127,7 @@ def change_temp(request):
 
     return JsonResponse({'temperature' : device.temperature})
 
+@csrf_exempt
 def addThermostat(request):
     form = DeviceForm()
 
@@ -140,57 +141,64 @@ def addThermostat(request):
 
     return render(request, 'temperature/thermostat.html', context)
 
-@csrf_exempt
-def add_thermostat_api(request):
-    if request.method == 'POST':
-        payload = json.loads(request.body)
-        thermostat_name = payload['thermostat_name']
-        thermostat_temperature = payload['thermostat_temperature']
-        thermostat_owner = payload['thermostat_owner']
-        device = Device(name=thermostat_name, temperature=thermostat_temperature, owner=thermostat_owner)
-        try:
-            device.save()
-            response = json.dumps([{ 'Success': 'Device added successfully!'}])
-        except:
-            response = json.dumps([{ 'Error': 'Device could not be added!'}])
+# @csrf_exempt
+# def add_thermostat_api(request):
+#     if request.method == 'POST':
+#         payload = json.loads(request.body)
+#         thermostat_name = payload['thermostat_name']
+#         thermostat_temperature = payload['thermostat_temperature']
+#         thermostat_owner = payload['thermostat_owner']
+#         device = Device(name=thermostat_name, temperature=thermostat_temperature, owner=thermostat_owner)
+#         try:
+#             device.save()
+#             response = json.dumps([{ 'Success': 'Device added successfully!'}])
+#         except:
+#             response = json.dumps([{ 'Error': 'Device could not be added!'}])
     
-    return HttpResponse(response, content_type='text/json')
+#     return HttpResponse(response, content_type='text/json')
 
-class DeviceList(APIView):
+# class DeviceList(APIView):
 
-    ENDPOINTS = {
-        'DELETE_DEVICE': 'localhost:8888/delete/{}',
-    }
+#     ENDPOINTS = {
+#         'DELETE_DEVICE': 'localhost:8888/delete/{}',
+#     }
 
-    def get(self, request):
-        devices = Device.objects.all()
-        serializer_class = DeviceSerializer(devices, many=True)
-        return Response(serializer_class.data)
+#     serializer_class = DeviceSerializer
 
-    @csrf_exempt
-    def post(self, request):
-        if request.method == 'POST':
-            payload = json.loads(request.body)
-            thermostat_name = payload['thermostat_name']
-            thermostat_temperature = payload['thermostat_temperature']
-            thermostat_owner = payload['thermostat_owner']
-            device = Device(name=thermostat_name, temperature=thermostat_temperature, owner=thermostat_owner)
-            try:
-                device.save()
-                response = json.dumps([{ 'Success': 'Device added successfully!'}])
-            except:
-                response = json.dumps([{ 'Error': 'Device could not be added!'}])
+#     def get_queryset(self):
+#         devices = Device.objects.all()
+#         return devices
+
+#     def get(self, request, *args, **kwargs):
+#         devices = self.get_queryset()
+#         serializer_class = DeviceSerializer(devices, many=True)
+
+#         return Response(serializer_class.data)
+
+#     @csrf_exempt
+#     def post(self, request):
+#         if request.method == 'POST':
+#             payload = json.loads(request.body)
+#             thermostat_name = payload['thermostat_name']
+#             thermostat_temperature = payload['thermostat_temperature']
+#             thermostat_owner = payload['thermostat_owner']
+#             device = Device(name=thermostat_name, temperature=thermostat_temperature, owner=thermostat_owner)
+#             try:
+#                 device.save()
+#                 response = json.dumps([{ 'Success': 'Device added successfully!'}])
+#             except:
+#                 response = json.dumps([{ 'Error': 'Device could not be added!'}])
     
-        return HttpResponse(response, content_type='text/json')
+#         return HttpResponse(response, content_type='text/json')
 
-    def delete_device(self, device_id):
-        try:
-            response = requests.delete(self.ENDPOINTS['DELETE_DEVICE'].format(device_id))
+#     def delete_device(self, device_id):
+#         try:
+#             response = requests.delete(self.ENDPOINTS['DELETE_DEVICE'].format(device_id))
 
-            if response.status_code == 204:
-                response = json.dumps([{ 'Success': 'Device added successfully!'}])
-        except:
-            response = json.dumps([{ 'Error': 'Device could not be added!'}])
+#             if response.status_code == 204:
+#                 response = json.dumps([{ 'Success': 'Device added successfully!'}])
+#         except:
+#             response = json.dumps([{ 'Error': 'Device could not be added!'}])
 
-        return HttpResponse(response, content_type='test/json')
+#         return HttpResponse(response, content_type='test/json')
             

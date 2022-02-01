@@ -1,8 +1,7 @@
 from rest_framework import serializers
-from .models import Device
+from temperature.models import Device
 
 class DeviceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Device
-        # fields = ('name', 'temperature', 'owner')
-        fields = '__all__'
+        fields = ['name', 'online', 'temperature', 'owner']

@@ -22,8 +22,9 @@ from rest_framework.urlpatterns import format_suffix_patterns
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('temperature.urls')),
-    path('addDevice', views.add_thermostat_api),
-    path('devices/', views.DeviceList.as_view()),
+    # path('addDevice', views.add_thermostat_api),
+    # path('devices/', views.DeviceList.as_view()),
+    path('get/', include('temperature.api.urls')),
 ]
 
-urlpatterns = format_suffix_patterns(urlpatterns)
+# urlpatterns = format_suffix_patterns(urlpatterns)
