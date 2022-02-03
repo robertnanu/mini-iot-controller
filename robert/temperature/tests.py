@@ -1,6 +1,6 @@
 from django.urls import reverse
 from rest_framework.test import APITestCase, APIClient, RequestsClient
-from .views import HTTP_200_OK, HTTP_201_CREATED, HTTP_404
+from .views import HTTP_200_OK, HTTP_201_CREATED
 from .models import Device
 from temperature.api.serializers import DeviceSerializer
 
@@ -73,9 +73,3 @@ class DeviceTestCases(APITestCase):
         data = {4}
         response = self.client.delete(url, data, format='json')
         self.assertEqual(response.status_code, HTTP_200_OK)
-    
-    def test_put(self):
-        url = 'http://127.0.0.1:8888/get/devices/8/'
-        data = {"humidity": 15}
-        response = self.client.patch(url, data, format='json')
-        self.assertEqual(response.status_code, HTTP_404)
