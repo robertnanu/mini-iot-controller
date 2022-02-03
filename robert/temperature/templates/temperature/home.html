@@ -72,6 +72,9 @@
             <input type="number" id="newTemperature-{{device.id}}" name="newTemperature-{{device.id}}" min="1" max="40">
             <button id="tempButton-{{device.id}}" type="button" class="button btn tempButton" device='{{device.id}}'>Submit</button>
 
+            <h3>Humidity:</h3>
+            <p id="temperature-{{device.id}}">{{device.humidity}}</p>
+
             <h3>State:</h3>
             <p id="status-{{device.id}}">
                 {% if device.online %}

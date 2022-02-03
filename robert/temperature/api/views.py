@@ -51,16 +51,23 @@ class DeviceViewset(viewsets.ModelViewSet):
 
     #     return Response(serializer.data)
 
-    def destroy(self, request, *args, **kwargs):
-        loggedin_user = request.user
-        if loggedin_user == 'admin':
-            device = self.get_object()
-            device.delete()
-            response_message = {'message': "Item has been deleted"}
-        else:
-            response_message = {'message': 'Not Allowed'}
+    # def destroy(self, request, *args, **kwargs):
+    #     loggedin_user = request.user
+    #     if loggedin_user == 'admin':
+    #         device = self.get_object()
+    #         device.delete()
+    #         response_message = {'message': "Item has been deleted"}
+    #     else:
+    #         response_message = {'message': 'Not Allowed'}
 
-        return Response(response_message)
+    #     return Response(response_message)
+
+    def destroy(self, request, *args, **kwargs):
+        device = self.get_object()
+        device.delete()
+            
+        return Response({'message': "Item has been deleted"})
+
 
     def put(self, request, *args, **kwargs):
         device = Device.objects.get()
@@ -69,9 +76,24 @@ class DeviceViewset(viewsets.ModelViewSet):
 
         device.name = data['name']
         device.temperature = data['temperature']
+        device.humidity = data['humidity']
         device.online = data['online']
         
         device.save()
 
         serializer = DeviceSerializer(device)
+        return Response(serializer.data)
+
+    def patch(self, request, *args, **kwargs):
+        device = Device.objects.get()
+        data = request.data
+
+        device.name = data.get("name", device.name)
+        device.temperature = data.get("temperature", device.temperature)
+        device.online = data.get("online", device.online)
+        device.humidity = data.get("humidity", device.humidity)
+
+        device.save()
+        serializer = DeviceSerializer(device)
+
         return Response(serializer.data)
