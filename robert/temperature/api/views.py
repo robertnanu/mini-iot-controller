@@ -4,10 +4,12 @@ from rest_framework.response import Response
 from rest_framework import viewsets
 from .serializers import DeviceSerializer
 from temperature.models import Device
+from rest_framework import status
+
 
 @api_view()
 @permission_classes([AllowAny])
-def firstFunction(request):
+def firstFunction(request, AllowPUTAsCreateMixin):
     print(request.query_params)
     print(request.query_params['num'])
     number = request.query_params['num']
@@ -28,7 +30,7 @@ class DeviceViewset(viewsets.ModelViewSet):
         print(params['pk'])
         devices = Device.objects.filter(pk=params['pk'])
         serializer = DeviceSerializer(devices, many=True)
-        return Response(serializer.data) 
+        return Response(serializer.data)
     
     # def retrieve(self, request, *args, **kwargs):
     #     params = kwargs
@@ -62,6 +64,7 @@ class DeviceViewset(viewsets.ModelViewSet):
 
     #     return Response(response_message)
 
+    @permission_classes([AllowAny])
     def destroy(self, request, *args, **kwargs):
         device = self.get_object()
         device.delete()
