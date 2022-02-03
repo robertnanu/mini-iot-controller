@@ -11,3 +11,8 @@ Comenzi pentru pornirea aplicatiei:
 8. Realizati comanda "python manage.py runserver 8888" (pentru a porni aplicatia)
 9. Intrati pe orice browser si introduceti in bara de sus: "localhost:8888"
 10. Pentru a putea interactiona cu partea de administrator a aplicatiei introduceti in bara de sus: "localhost:8888/admin"
+
+
+Pentru accesarea documentatiei de API-uri accesati urmatoarele link-uri:
+- "localhost:8888/schema"
+- "localhost:8888/docs/"
