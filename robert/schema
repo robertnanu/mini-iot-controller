@@ -1,0 +1,71 @@
+info:
+  description: API for Device
+  title: DeviceAPI
+  version: ''
+openapi: 3.0.0
+paths:
+  /get/devices/:
+    get:
+      operationId: devices_list
+      tags:
+      - devices
+    post:
+      operationId: devices_create
+      tags:
+      - devices
+  /get/devices/{id}/:
+    delete:
+      operationId: devices_delete
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          description: ''
+          title: ''
+          type: string
+      tags:
+      - devices
+    get:
+      operationId: devices_read
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          description: ''
+          title: ''
+          type: string
+      tags:
+      - devices
+    patch:
+      operationId: devices_partial_update
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          description: ''
+          title: ''
+          type: string
+      tags:
+      - devices
+    put:
+      operationId: devices_update
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          description: ''
+          title: ''
+          type: string
+      tags:
+      - devices
+  /get/first:
+    get:
+      operationId: first_list
+      tags:
+      - first
+servers:
+- url: http://127.0.0.1:8888/schema?format=openapi

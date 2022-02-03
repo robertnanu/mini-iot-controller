@@ -12,6 +12,8 @@ django-rest-auth = "*"
 paho-mqtt = "*"
 django-allauth = "*"
 requests = "*"
+coreapi = "*"
+pyyaml = "*"
 
 [dev-packages]
 

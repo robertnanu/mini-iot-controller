@@ -1,5 +1,0 @@
-from rest_framework import status
-
-HTTP_201_CREATED = status.HTTP_400_BAD_REQUEST
-HTTP_200_OK = status.HTTP_405_METHOD_NOT_ALLOWED
-HTTP_404 = status.HTTP_404_NOT_FOUND
